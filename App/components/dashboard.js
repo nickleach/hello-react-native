@@ -6,6 +6,7 @@ import React, {
   View,
   TouchableHighlight
 } from 'react-native';
+import Profile from './profile';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +30,7 @@ class Dashboard extends React.Component{
         alignSelf: 'stretch',
         justifyContent: 'center',
         flex: 1
-    }
+        }
         if(btn === 0){
           obj.backgroundColor = '#48BBEC';
         } else if (btn === 1){
@@ -40,7 +41,11 @@ class Dashboard extends React.Component{
         return obj
     }
     goToProfile(){
-        console.log('Going to Profile Page');
+        this.props.navigator.push({
+          component: Profile,
+          title: 'Profile Page',
+          passProps: {userInfo: this.props.userInfo}
+        })
     }
     goToRepos(){
         console.log('Going to Repos');
