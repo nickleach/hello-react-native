@@ -5,6 +5,7 @@ import React, {
   ScrollView
 } from 'react-native';
 import Badge from './badge';
+import Separator from './helpers/separator';
 
 const styles = StyleSheet.create({
     container: {
@@ -37,19 +38,20 @@ class Profile extends React.Component{
         userInfo = this.props.userInfo,
         topicArr = ['company', 'location', 'followers', 'following', 'email', 'bio', 'public_repos'];
     let list = topicArr.map((item, index) => {
-                if(!userInfo[item]){
-                    return <View key={index}/>
-                } else {
-                return (
-                  <View key={index}>
-                    <View style={styles.rowContainer}>
-                      <Text style={styles.rowTitle}> {this.getRowTitle(userInfo, item)} </Text>
-                      <Text style={styles.rowContent}> {userInfo[item]} </Text>
-                    </View>
-                  </View>
-                )
-            }
-        });
+            if(!userInfo[item]){
+                return <View key={index}/>
+            } else {
+            return (
+              <View key={index}>
+                <View style={styles.rowContainer}>
+                  <Text style={styles.rowTitle}> {this.getRowTitle(userInfo, item)} </Text>
+                  <Text style={styles.rowContent}> {userInfo[item]} </Text>
+                </View>
+                <Separator/>
+              </View>
+            )
+        }
+    });
     return (
       <ScrollView style={styles.container}>
         <Badge userInfo={this.props.userInfo}/>
