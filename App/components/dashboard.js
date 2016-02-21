@@ -7,6 +7,9 @@ import React, {
   TouchableHighlight
 } from 'react-native';
 import Profile from './profile';
+import Repositories from './repositories';
+import api from '../utils/api';
+import Notes from './notes';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,10 +29,10 @@ const styles = StyleSheet.create({
 class Dashboard extends React.Component{
     makeBackground(btn){
         var obj = {
-        flexDirection: 'row',
-        alignSelf: 'stretch',
-        justifyContent: 'center',
-        flex: 1
+            flexDirection: 'row',
+            alignSelf: 'stretch',
+            justifyContent: 'center',
+            flex: 1
         }
         if(btn === 0){
           obj.backgroundColor = '#48BBEC';
@@ -42,16 +45,37 @@ class Dashboard extends React.Component{
     }
     goToProfile(){
         this.props.navigator.push({
-          component: Profile,
-          title: 'Profile Page',
-          passProps: {userInfo: this.props.userInfo}
-        })
+            component: Profile,
+            title: 'Profile Page',
+            passProps: {userInfo: this.props.userInfo}
+        });
     }
     goToRepos(){
-        console.log('Going to Repos');
+        api.getRepos(this.props.userInfo.login)
+        .then((res) => {
+            this.props.navigator.push({
+                component: Repositories,
+                title: 'Repos Page',
+                passProps: {
+                    userInfo: this.props.userInfo,
+                    repos: res
+                }
+            });
+        });
     }
     goToNotes(){
-        console.log('Going to Notes');
+        api.getNotes(this.props.userInfo.login)
+        .then((res) => {
+            res = res || {};
+            this.props.navigator.push({
+                component: Notes,
+                title: 'Notes',
+                passProps: {
+                    notes: res,
+                    userInfo: this.props.userInfo
+                }
+            });
+        });
     }
     render() {
         console.log(this.props);
